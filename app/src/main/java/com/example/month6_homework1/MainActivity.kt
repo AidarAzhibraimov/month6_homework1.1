@@ -13,26 +13,30 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var registerForActivityResult: ActivityResultLauncher<Intent>
 
+    companion object {
+        const val editName: String = "edit_text"
+        const val editResult: String = "result"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnGo.setOnClickListener{
-            if (binding.etEnterText.text.toString().isEmpty()){
+        binding.btnGo.setOnClickListener {
+            if (binding.etEnterText.text.toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.noSimvol), Toast.LENGTH_SHORT).show()
-            }else{
-                Intent (this@MainActivity,TextActivity::class.java).apply {
-                    putExtra("edit_text", binding.etEnterText.text.toString())
+            } else {
+                Intent(this@MainActivity, TextActivity::class.java).apply {
+                    putExtra(editName, binding.etEnterText.text.toString())
                     registerForActivityResult.launch(this)
                 }
             }
         }
-        registerForActivityResult=registerForActivityResult(
+        registerForActivityResult = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
-        ){
-            result ->
-            binding.etEnterText.setText(result.data?.getStringExtra("result"))
+        ) { result ->
+            binding.etEnterText.setText(result.data?.getStringExtra(editResult))
         }
     }
 }
